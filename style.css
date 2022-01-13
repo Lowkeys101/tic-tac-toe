@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    position: relative;
+    /* align-items: center; */
+    justify-content: center;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.gameboard {
+    position: absolute;
+    background-color: black;
+    top: 10%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    min-height: 50vw; 
+    min-width: 50vw;
+}
+
+.gamecell {
+    background-color: goldenrod;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
