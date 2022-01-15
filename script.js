@@ -14,7 +14,7 @@
 // TODO: Create Gameboard module to store gameboard state
 const gameBoard = (function gameBoard() {
 
-    let gameBoardArray = ["X", "O", "O", "X", "X", "X", "X", "O", "X"];
+    let gameBoardArray = [...Array(9).fill("")];
 
     function renderBoard (board) {
 
@@ -63,7 +63,11 @@ const gameBoard = (function gameBoard() {
         return full;
     }
 
-    return {clearBoard, renderBoard, cellEmpty, isWinning, isFull, gameBoardArray};
+    function modifyGameboard(index, symbol) {
+        gameBoardArray[index] = symbol;
+    }
+
+    return {clearBoard, renderBoard, cellEmpty, isWinning, isFull, modifyGameboard, gameBoardArray};
 })();
 
 // TODO: Create Player modules
@@ -79,18 +83,36 @@ const playgame = (function playGame() {
     const player1 = createPlayer("X");
     const player2 = createPlayer("O");
 
-    let currentTurnPlayer1 = true;
-
+    
     gameBoard.clearBoard();    
 })();
 
 const displayController = (function displayController() {
     const gamecells = document.querySelectorAll(".gamecell");
-
+    let currentTurnPlayer = true;
+    
     function handleClick(e) {
-        // CHECK IF EMPTY CELL
+        // check if empty cell
+        if(gameBoard.cellEmpty(e.target.dataset.cellIndex - 1)) {
+            if (currentTurnPlayer) {
+                gameBoard.modifyGameboard(e.target.dataset.cellIndex - 1, "X")
+                e.target.textContent = "X";
+                currentTurnPlayer = !currentTurnPlayer;
+            } else {
+                gameBoard.modifyGameboard(e.target.dataset.cellIndex - 1, "O")
+                e.target.textContent = "O";
+                currentTurnPlayer = !currentTurnPlayer;
+            }
+        }
+
+        if (gameBoard.isWinning()) {
+            console.log("Congratulations you have won");
+        }
+
+        if (gameBoard.isFull()) {
+            console.log("Game board is full");
+        }
         // CHECK IF WINNING OR NO MORE CELLS
-        e.target.textContent = "X";
     }
     gamecells.forEach(cell => {
         cell.addEventListener("click", handleClick)
