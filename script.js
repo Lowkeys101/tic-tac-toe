@@ -52,11 +52,15 @@ const gameBoard = (function gameBoard() {
     return {clearBoard, cellEmpty, isWinning, isFull, modifyGameboard, getBoard, clearBoard};
 })();
 
-function createPlayer(name, playerSymbol) {
+const Player = (function Player() {
 
-    return {name, playerSymbol};
+    function createPlayer(name, playerSymbol) {
+        return {name, playerSymbol};
+    }
 
-}
+    return {createPlayer};
+
+})();
 
 
 const displayController = (function displayController() {
@@ -100,6 +104,8 @@ const displayController = (function displayController() {
             } else {
                 display.textContent = `Congratulations ${player2.name} has won!`;
             }
+            removeCellListeners();
+
         } else if (gameBoard.isFull()) {
             display.textContent = "It's a draw!";
         }
@@ -112,13 +118,14 @@ const displayController = (function displayController() {
         renderBoard(gameBoard.getBoard());
         currentTurnPlayer = true;
         display.textContent = "You can play now";
-        player1 =  createPlayer(player1InputField.value, "X");
-        player2 =  createPlayer(player2InputField.value, "O");       
+        player1 =  Player.createPlayer(player1InputField.value, "X");
+        player2 =  Player.createPlayer(player2InputField.value, "O");       
     }
 
     function handleRestartButton() {
         gameBoard.clearBoard();
         renderBoard(gameBoard.getBoard());
+        addCellListeners();
         currentTurnPlayer = true;
         display.textContent = "You can play now";
     }
@@ -126,6 +133,12 @@ const displayController = (function displayController() {
     function addCellListeners() {
         gamecells.forEach(cell => {
             cell.addEventListener("click", handleCellClick)
+        });
+    }
+
+    function removeCellListeners() {
+        gamecells.forEach(cell => {
+            cell.removeEventListener("click", handleCellClick)
         });
     }
 
