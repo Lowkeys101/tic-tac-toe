@@ -6,7 +6,6 @@ body {
 .content-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     max-width: 90vw;
     max-height: 90vh;
@@ -37,8 +36,8 @@ body {
     margin-top: 10px;
     align-self: flex-start;
     display: grid;
-    /* grid-template-columns: 25vw 40vw 25vw; */
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 25vw 40vw 25vw;
+    /* grid-template-columns: 1fr 2fr 1fr; */
     flex-wrap: wrap;
 }
 
