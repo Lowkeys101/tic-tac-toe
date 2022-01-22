@@ -9,22 +9,37 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="wrapper">
+    <div class="content-wrapper">
         <div class="button-container">
-            <button class ="buttonStart">Start</button>
-            <button class ="buttonRestart">Restart</button>
+            <button class ="start-button">Start</button>
+            <button class ="restart-button">Restart</button>
         </div>
-            <div class="gameboard">
-                <div class="gamecell" data-cell-Index = "1">1</div>
-                <div class="gamecell" data-cell-Index = "2">2</div>
-                <div class="gamecell" data-cell-Index = "3">3</div>
-                <div class="gamecell" data-cell-Index = "4">4</div>
-                <div class="gamecell" data-cell-Index = "5">5</div>
-                <div class="gamecell" data-cell-Index = "6">6</div>
-                <div class="gamecell" data-cell-Index = "7">7</div>
-                <div class="gamecell" data-cell-Index = "8">8</div>
-                <div class="gamecell" data-cell-Index = "9">9</div>
+
+        <div class="display-wrapper">
+            <div class="player-form">
+                <p>
+                    <label for="player1-name">Enter Player 1 name:</label>
+                    <input type="text" id="player1-name" placeholder="Clark Kent">
+                </p>
+                <p>
+                    <label for="player2-name">Enter Player 2 name:</label>
+                    <input type="text" id="player2-name" placeholder="Peter Parker">
+                </p>
+
             </div>
+            <div class="gameboard">
+                <div class="gamecell" data-cell-Index = "1"></div>
+                <div class="gamecell" data-cell-Index = "2"></div>
+                <div class="gamecell" data-cell-Index = "3"></div>
+                <div class="gamecell" data-cell-Index = "4"></div>
+                <div class="gamecell" data-cell-Index = "5"></div>
+                <div class="gamecell" data-cell-Index = "6"></div>
+                <div class="gamecell" data-cell-Index = "7"></div>
+                <div class="gamecell" data-cell-Index = "8"></div>
+                <div class="gamecell" data-cell-Index = "9"></div>
+            </div>
+            <div class="display">Enter player names and click start</div>
+        </div>        
     </div>
 </body>
 </html>

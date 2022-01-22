@@ -1,34 +1,16 @@
 // Tic-tac-toe game, implemented with as little global code as possible 
 
-// {Player1 clicks cell
-//     Check if cell empty
-//     Check if game over or no more empty cells. END LOOP.
-//     Player2 clicks cell
-//     Check if cell empty
-//     Check if game over or no more empty cells. END LOOP
-//     } loop 
-    
-//     Clear cells play again.
-
-
-// TODO: Create Gameboard module to store gameboard state
 const gameBoard = (function gameBoard() {
 
     let gameBoardArray = [...Array(9).fill("")];
 
-    function renderBoard (board) {
-
-        // gameboardArray = ["O", "X", "O", "", "", "", "X", "O", "X"];
-        const gamecells = document.querySelectorAll(".gamecell");
-    
-        gamecells.forEach(cell => {
-            index = cell.dataset.cellIndex - 1; //since dataset attributes started counting from 1 instead of 0
-            cell.textContent = board[index]
-        });    
-    }
 
     function clearBoard() {
-        renderBoard([...Array(9)].fill(""));
+        gameBoardArray = [...Array(9)].fill("");
+    }
+
+    function getBoard() {
+        return gameBoardArray;
     }
 
     function cellEmpty(index) {
@@ -67,31 +49,37 @@ const gameBoard = (function gameBoard() {
         gameBoardArray[index] = symbol;
     }
 
-    return {clearBoard, renderBoard, cellEmpty, isWinning, isFull, modifyGameboard, gameBoardArray};
+    return {clearBoard, cellEmpty, isWinning, isFull, modifyGameboard, getBoard, clearBoard};
 })();
 
-// TODO: Create Player modules
-function createPlayer(playerSymbol) {
+function createPlayer(name, playerSymbol) {
 
-    return {playerSymbol};
+    return {name, playerSymbol};
 
 }
 
-// TODO: Create module to control gamestate
-
-const playgame = (function playGame() {
-    const player1 = createPlayer("X");
-    const player2 = createPlayer("O");
-
-    
-    gameBoard.clearBoard();    
-})();
 
 const displayController = (function displayController() {
     const gamecells = document.querySelectorAll(".gamecell");
+    const startButton = document.querySelector(".start-button");
+    const restartButton = document.querySelector(".restart-button");
+    const display = document.querySelector(".display");
+    const player1InputField = document.querySelector("#player1-name");
+    const player2InputField = document.querySelector("#player2-name");
+
+    let player1;
+    let player2;
+
     let currentTurnPlayer = true;
     
-    function handleClick(e) {
+    function renderBoard (board) {
+        gamecells.forEach(cell => {
+            index = cell.dataset.cellIndex - 1; // -1 since html dataset attributes started counting from 1 instead of 0
+            cell.textContent = board[index]
+        });    
+    }
+
+    function handleCellClick(e) {
         // check if empty cell
         if(gameBoard.cellEmpty(e.target.dataset.cellIndex - 1)) {
             if (currentTurnPlayer) {
@@ -105,19 +93,48 @@ const displayController = (function displayController() {
             }
         }
 
+        // check if winning
         if (gameBoard.isWinning()) {
-            console.log("Congratulations you have won");
+            if (!currentTurnPlayer) {
+                display.textContent = `Congratulations ${player1.name} has won!`;
+            } else {
+                display.textContent = `Congratulations ${player2.name} has won!`;
+            }
+        } else if (gameBoard.isFull()) {
+            display.textContent = "It's a draw!";
         }
 
-        if (gameBoard.isFull()) {
-            console.log("Game board is full");
-        }
-        // CHECK IF WINNING OR NO MORE CELLS
     }
-    gamecells.forEach(cell => {
-        cell.addEventListener("click", handleClick)
-    });
 
+    function handleStartButton() {
+        addCellListeners();
+        gameBoard.clearBoard();
+        renderBoard(gameBoard.getBoard());
+        currentTurnPlayer = true;
+        display.textContent = "You can play now";
+        player1 =  createPlayer(player1InputField.value, "X");
+        player2 =  createPlayer(player2InputField.value, "O");       
+    }
+
+    function handleRestartButton() {
+        gameBoard.clearBoard();
+        renderBoard(gameBoard.getBoard());
+        currentTurnPlayer = true;
+        display.textContent = "You can play now";
+    }
+
+    function addCellListeners() {
+        gamecells.forEach(cell => {
+            cell.addEventListener("click", handleCellClick)
+        });
+    }
+
+    function addButtonListeners() {
+        startButton.addEventListener("click", handleStartButton);
+        restartButton.addEventListener("click", handleRestartButton);
+    }
+
+    addButtonListeners();    
 })();
 
 
